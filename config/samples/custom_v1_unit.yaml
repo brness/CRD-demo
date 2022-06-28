@@ -1,0 +1,39 @@
+apiVersion: custom.hmlss.ml/v1
+kind: Unit
+metadata:
+  name: unit-sample
+spec:
+  # TODO(user): Add fields here
+  category: "Deployment"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    spec:
+      containers:
+        - image: nginx
+          imagePullPolicy: IfNotPresent
+          name: unit-sample
+          resources:
+            limits:
+              cpu: 110m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+  relationResource:
+    serviceInfo:
+      ports:
+        - name: http
+          port: 80
+          protocol: TCP
+          targetPort: 80
+    pvcInfo:
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: standard
